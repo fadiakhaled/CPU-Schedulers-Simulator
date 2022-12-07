@@ -1,6 +1,6 @@
 package pack1;
 
-public class Process {
+public class myProcess {
     private String name;
     private int burstTime;
     private int arrivalTime;
