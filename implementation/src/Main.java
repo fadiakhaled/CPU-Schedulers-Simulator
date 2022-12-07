@@ -44,7 +44,7 @@ public class Main {
         }
         //for (myProcess process: processes) process.printProcess();
 
-        System.out.print( "1 - Preemptive Shortest-Job First (SJF) Scheduling");
+        System.out.println( "1 - Preemptive Shortest-Job First (SJF) Scheduling");
         SJFscheduling sjf = new SJFscheduling();
         sjf.schedule(processes, processes.size());
 
