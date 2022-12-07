@@ -11,7 +11,7 @@ public class SJFscheduling {
         for (int i = 0; i < sz; i++) burstCopy[i] = processes.get(i).getBurstTime();
 
 
-        int completed = 0, time = 0, mini = Integer.MAX_VALUE;
+        int completed = 0, time = 0, minimumBurst = Integer.MAX_VALUE;
         int currentProcess = 0;
         boolean check = false;
 
@@ -19,13 +19,13 @@ public class SJFscheduling {
             // find process with minimum remaining burst time
             for (int i = 0; i < sz; i++) {
                 /*
-                * check if the process has arrived
+                * check if the process has arrived according to the current time elapsed
                 * check if it has burst time less than current process's burst time
                 * check if the process hasn't finished yet (burst time > 0)
                  */
-                if ((processes.get(i).getArrivalTime() <= time)
-                        && (burstCopy[i] < mini) && burstCopy[i]  > 0 ) {
-                    mini = burstCopy[i];
+                int arrivalTime = processes.get(i).getArrivalTime();
+                if ((arrivalTime <= time) && (burstCopy[i] < minimumBurst) && (burstCopy[i]  > 0)) {
+                    minimumBurst = burstCopy[i];
                     currentProcess = i;
                     check = true;
                 }
@@ -39,26 +39,34 @@ public class SJFscheduling {
             }
 
             //filling the processes execution order vector
-            if (executionOrder.size() == 0 )  executionOrder.add(processes.get(currentProcess).getName());
-            else if (!Objects.equals(processes.get(currentProcess).getName(), executionOrder.get(executionOrder.size() - 1))) {
-                executionOrder.add(processes.get(currentProcess).getName());
+            String currentProcessName = processes.get(currentProcess).getName();
+            int orderSize = executionOrder.size();
+            if (orderSize == 0 )
+                executionOrder.add(currentProcessName);
+            else if (!Objects.equals(currentProcessName, executionOrder.get(orderSize-1))) {
+               executionOrder.add(currentProcessName);
             }
 
 
             burstCopy[currentProcess]--; // reduce the burst time of the current running process
-            mini = burstCopy[currentProcess]; // update the current minimum burst time
+            minimumBurst = burstCopy[currentProcess]; // update the current minimum burst time
 
             // if a process is executed completely
             if (burstCopy[currentProcess] == 0) {
 
-                mini = Integer.MAX_VALUE; // reset to continue comparing
+                minimumBurst = Integer.MAX_VALUE; // reset to continue comparing
                 completed++; // increase number of completed processes
                 check = false;
 
-                int currentFinish = time+1;
+                int currentFinishTime = time+1;
+                int processBrustTime = processes.get(currentProcess).getBurstTime();
+                int processArrivalTime = processes.get(currentProcess).getArrivalTime();
 
-                int waiting = currentFinish - processes.get(currentProcess).getBurstTime() - processes.get(currentProcess).getArrivalTime();
-                if (waiting < 0) waiting =0;
+                int waiting = currentFinishTime - processBrustTime - processArrivalTime;
+
+                if (waiting < 0)
+                    waiting = 0;
+
                 processes.get(currentProcess).setWaitingTime(waiting);
             }
             time++;
