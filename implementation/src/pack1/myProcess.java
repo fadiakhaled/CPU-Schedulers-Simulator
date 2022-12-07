@@ -5,7 +5,16 @@ public class myProcess {
     private int burstTime;
     private int arrivalTime;
     private int priority;
-
+    private int waitingTime;
+    private int turnAroundTime;
+    public myProcess(String n, int burst, int arrive, int prio){
+        setName(n);
+        setBurstTime(burst);
+        setArrivalTime(arrive);
+        setPriority(prio);
+        setWaitingTime(0);
+        setTurnAroundTime(0);
+    }
     public void setArrivalTime(int arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
@@ -36,6 +45,31 @@ public class myProcess {
 
     public int getPriority() {
         return priority;
+    }
+
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime = waitingTime;
+    }
+
+    public int getWaitingTime() {
+        return waitingTime;
+    }
+
+    public void setTurnAroundTime(int turnAroundTime) {
+        this.turnAroundTime = turnAroundTime;
+    }
+
+    public int getTurnAroundTime() {
+        return turnAroundTime;
+    }
+
+    public void printProcess () {
+        System.out.println("Name: " + getName());
+        System.out.println("Arrival time: " + getArrivalTime());
+        System.out.println("Burst time: " + getBurstTime());
+        System.out.println("Priority: " + getPriority());
+        System.out.println("Waiting time: " + getWaitingTime());
+        System.out.println("Turn around time: " + getTurnAroundTime());
     }
 
 
