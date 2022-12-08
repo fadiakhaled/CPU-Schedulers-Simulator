@@ -3,7 +3,7 @@ package pack1;
 import java.util.Objects;
 import java.util.Vector;
 
-public class SJFScheduling {
+public class SJFScheduler {
     Scheduling scheduling = new Scheduling();
 
     private final Vector<String> executionOrder = new Vector<>();

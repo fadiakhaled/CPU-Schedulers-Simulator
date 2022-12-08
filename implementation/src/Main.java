@@ -52,7 +52,7 @@ public class Main {
 
 
         System.out.println( "1 - Preemptive Shortest-Job First (SJF) Scheduling");
-        SJFScheduling sjf = new SJFScheduling();
+        SJFScheduler sjf = new SJFScheduler();
         sjf.schedule(processes, processes.size(), contextSwitching);
 
         for (myProcess process: processes) {
@@ -61,7 +61,7 @@ public class Main {
         }
 
         System.out.println( "\n2 - Round Robin (RR) Scheduling");
-        RRScheduling rr = new RRScheduling();
+        RRScheduler rr = new RRScheduler();
         rr.schedule(processes, processes.size(), quantum, contextSwitching);
 
 

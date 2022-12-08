@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-public class RRScheduling {
+public class RRScheduler {
     Scheduling scheduling = new Scheduling();
     private final Vector<String> executionOrder = new Vector<>();
 
