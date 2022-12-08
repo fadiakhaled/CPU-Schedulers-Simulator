@@ -3,10 +3,11 @@ package pack1;
 import java.util.Objects;
 import java.util.Vector;
 
-public class SJFscheduling {
+public class SJFScheduling extends Scheduling {
 
-    private Vector<String> executionOrder = new Vector<String>();
-    public Vector<myProcess> calculateWaiting(Vector<myProcess> processes, int size){
+    private final Vector<String> executionOrder = new Vector<>();
+
+    public void calculateWaitingTime(Vector<myProcess> processes, int size){
         int[] burstCopy = new int[size];
         for (int i = 0; i < size; i++) burstCopy[i] = processes.get(i).getBurstTime();
 
@@ -59,10 +60,10 @@ public class SJFscheduling {
                 check = false;
 
                 int currentFinishTime = time+1;
-                int processBrustTime = processes.get(currentProcess).getBurstTime();
+                int processBurstTime = processes.get(currentProcess).getBurstTime();
                 int processArrivalTime = processes.get(currentProcess).getArrivalTime();
 
-                int waiting = currentFinishTime - processBrustTime - processArrivalTime;
+                int waiting = currentFinishTime - processBurstTime - processArrivalTime;
 
                 if (waiting < 0)
                     waiting = 0;
@@ -71,61 +72,14 @@ public class SJFscheduling {
             }
             time++;
         }
-        return processes;
     }
 
-    public Vector<myProcess> calculateTurnAroundTime (Vector<myProcess> processes){
 
-        for (myProcess process : processes) {
-            int turnTime = process.getBurstTime() + process.getWaitingTime();
-            process.setTurnAroundTime(turnTime);
-        }
-
-        return processes;
-    }
-
-    float findAverageWaiting (Vector<myProcess> processes, int size) {
-        float avgWaiting = 0.0F;
-        for (myProcess process : processes) {
-            avgWaiting += process.getWaitingTime();
-        }
-        return avgWaiting/size;
-    }
-
-    float findAverageTurnAround (Vector<myProcess> processes, int size) {
-        float avgTurnAround = 0.0F;
-
-        for (myProcess process : processes) {
-            avgTurnAround += process.getTurnAroundTime();
-        }
-        return avgTurnAround/size;
-    }
 
     public void schedule(Vector <myProcess> processes, int size) {
-
-        Vector<myProcess> results;
-        results = calculateWaiting(processes, size);
-        results = calculateTurnAroundTime(results);
-        float avgWaiting = findAverageWaiting(results, size);
-        float avgTurnAround = findAverageTurnAround(results, size);
-
-        System.out.print("\nProcesses execution order");
-        System.out.print(" [ ");
-        for (String s : executionOrder) {
-            System.out.print(s + " ");
-        }
-        System.out.println("]");
-
-        System.out.println("\nProcesses |  Waiting time  | Turn around time" );
-        System.out.println("----------|----------------|------------------");
-
-        for (myProcess process : results) {
-            System.out.print("    "+ process.getName() + "\t  |\t\t ");
-            System.out.print(process.getWaitingTime() + "\t\t   |\t\t");
-            System.out.println(process.getTurnAroundTime());
-        }
-        System.out.println("\nAverage waiting time = " + avgWaiting);
-        System.out.println("Average turn around time = " + avgTurnAround);
+        calculateWaitingTime(processes, size);
+        printOrder(executionOrder);
+        printResults(processes);
     }
 
 }
