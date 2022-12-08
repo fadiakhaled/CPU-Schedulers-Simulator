@@ -3,6 +3,7 @@ package pack1;
 import java.util.Objects;
 import java.util.Vector;
 
+// preemptive Shortest-Job First (SJF) Scheduling with context switching
 public class SJFScheduler {
     Scheduling scheduling = new Scheduling();
 
@@ -78,7 +79,6 @@ public class SJFScheduler {
             time++;
         }
     }
-
 
 
     public void schedule(Vector <myProcess> processes, int size, int contextSwitchingCost) {
