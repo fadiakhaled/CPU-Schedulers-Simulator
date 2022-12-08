@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-public class RRScheduling extends Scheduling {
+public class RRScheduling {
+    Scheduling scheduling = new Scheduling();
     private final Vector<String> executionOrder = new Vector<>();
 
     public void calculateWaitingTime(Vector<myProcess> processes, int size, int quantum) {
@@ -64,8 +65,9 @@ public class RRScheduling extends Scheduling {
             processes.add(entry.getValue());
         }
 
-        printOrder(executionOrder);
-        printResults(processes);
+        scheduling.printOrder(executionOrder);
+        scheduling.printResults(processes);
+
     }
 
 

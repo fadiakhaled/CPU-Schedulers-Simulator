@@ -3,7 +3,8 @@ package pack1;
 import java.util.Objects;
 import java.util.Vector;
 
-public class SJFScheduling extends Scheduling {
+public class SJFScheduling {
+    Scheduling scheduling = new Scheduling();
 
     private final Vector<String> executionOrder = new Vector<>();
 
@@ -78,8 +79,8 @@ public class SJFScheduling extends Scheduling {
 
     public void schedule(Vector <myProcess> processes, int size) {
         calculateWaitingTime(processes, size);
-        printOrder(executionOrder);
-        printResults(processes);
+        scheduling.printOrder(executionOrder);
+        scheduling.printResults(processes);
     }
 
 }

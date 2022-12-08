@@ -2,7 +2,7 @@ package pack1;
 
 import java.util.Vector;
 
-public abstract class Scheduling {
+public class Scheduling {
     void calculateTurnAroundTime (Vector<myProcess> processes){
 
         for (myProcess process : processes) {
