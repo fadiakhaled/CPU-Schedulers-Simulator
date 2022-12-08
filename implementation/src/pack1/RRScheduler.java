@@ -4,11 +4,13 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
+
+// Round Robin (RR) with context switching
 public class RRScheduler {
     Scheduling scheduling = new Scheduling();
     private final Vector<String> executionOrder = new Vector<>();
 
-    public void calculateWaitingTime(Vector<myProcess> processes, int size, int quantum, int contextSwitching) {
+    void calculateWaitingTime(Vector<myProcess> processes, int size, int quantum, int contextSwitching) {
         int contextSwitchingCost = 0;
         int[] burstCopy = new int[size];
         for (int i = 0; i < size; i++) {
