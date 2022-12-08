@@ -7,11 +7,11 @@ public class myProcess {
     private int priority;
     private int waitingTime;
     private int turnAroundTime;
-    public myProcess(String n, int burst, int arrive, int prio){
+    public myProcess(String n, int burst, int arrive, int prior){
         setName(n);
         setBurstTime(burst);
         setArrivalTime(arrive);
-        setPriority(prio);
+        setPriority(prior);
         setWaitingTime(0);
         setTurnAroundTime(0);
     }

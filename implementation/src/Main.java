@@ -1,39 +1,51 @@
 import pack1.*;
 
-import java.lang.Process;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
 
-    public static int validInput(int input) {
+    public static int validInput() {
         try {
-            input = sc.nextInt();
-            return input; 
+            return sc.nextInt();
         } catch (InputMismatchException exception) {
             System.out.println("Invalid input to an integer field. please rerun the program :)");
             return -1; 
         }
     }
 
+    public static void sortProcessArrival (Vector<myProcess> processes) {
+        TreeMap<Integer, myProcess> sortedProcess = new TreeMap<>();
+        for (myProcess process : processes) {
+            sortedProcess.put(process.getArrivalTime(), process);
+        }
+
+        processes.removeAllElements();
+
+        for (Map.Entry<Integer, myProcess> entry : sortedProcess.entrySet()) {
+            //System.out.println("arrival : " + entry.getKey() + " process: " + entry.getValue().getName());
+            processes.add(entry.getValue());
+        }
+        //for (myProcess process:processes) System.out.println(process.getName());
+    }
+
     public static void main(String[] args) {
 
-        int input = 0; 
-        Vector<myProcess> processes = new Vector<myProcess>();
+        Vector<myProcess> processes = new Vector<>();
         System.out.print("Enter number of processes: ");
-        int pnum = validInput(input);
+        int processesNumber = validInput();
+        System.out.print("Enter robin Time Quantum: ");
+        int quantum = validInput();
 
-        for (int i = 1; i <= pnum; i++) {
+        for (int i = 1; i <= processesNumber; i++) {
             sc.nextLine();
             //System.out.print("Process [" + i + "] name:  ");
             String name = sc.nextLine();
             //System.out.print("Process [" + i + "] arrival time:  ");
-            int arrival = validInput(input);
+            int arrival = validInput();
             if (arrival == -1) break;
             //System.out.print("Process [" + i + "] burst time:  ");
-            int burst = validInput(input);
+            int burst = validInput();
             if (burst == -1) break;
             /*System.out.print("Process [" + i + "] priority:  ");
             int priority = validInput(input);
@@ -42,12 +54,21 @@ public class Main {
             myProcess p = new myProcess(name,  burst, arrival, 0);
             processes.add(p);
         }
-        //for (myProcess process: processes) process.printProcess();
+
+        sortProcessArrival(processes);
 
         System.out.println( "1 - Preemptive Shortest-Job First (SJF) Scheduling");
-        SJFscheduling sjf = new SJFscheduling();
+        SJFScheduling sjf = new SJFScheduling();
         sjf.schedule(processes, processes.size());
 
+        for (myProcess process: processes) {
+            process.setWaitingTime(0);
+            process.setTurnAroundTime(0);
+        }
+
+        System.out.println( "\n2 - Round Robin (RR) Scheduling");
+        RRScheduling rr = new RRScheduling();
+        rr.schedule(processes, processes.size(), quantum);
 
 
     }
@@ -74,4 +95,27 @@ p7
 15
 8
 * */
+    /*
+    p1
+0
+3
+p2
+2
+5
+p3
+1
+4
+p4
+4
+2
+p5
+6
+9
+p6
+5
+4
+p7
+7
+10
+     */
 }
