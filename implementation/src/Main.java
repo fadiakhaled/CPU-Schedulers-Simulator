@@ -14,28 +14,16 @@ public class Main {
         }
     }
 
-    public static void sortProcessArrival (Vector<myProcess> processes) {
-        TreeMap<Integer, myProcess> sortedProcess = new TreeMap<>();
-        for (myProcess process : processes) {
-            sortedProcess.put(process.getArrivalTime(), process);
-        }
-
-        processes.removeAllElements();
-
-        for (Map.Entry<Integer, myProcess> entry : sortedProcess.entrySet()) {
-            //System.out.println("arrival : " + entry.getKey() + " process: " + entry.getValue().getName());
-            processes.add(entry.getValue());
-        }
-        //for (myProcess process:processes) System.out.println(process.getName());
-    }
-
     public static void main(String[] args) {
 
         Vector<myProcess> processes = new Vector<>();
+        Vector<Integer> arrivals = new Vector<Integer>();
         System.out.print("Enter number of processes: ");
         int processesNumber = validInput();
-        System.out.print("Enter robin Time Quantum: ");
+        System.out.print("Enter Robin Time Quantum: ");
         int quantum = validInput();
+        System.out.print("Enter context switching cost: ");
+        int contextSwitching = validInput();
 
         for (int i = 1; i <= processesNumber; i++) {
             sc.nextLine();
@@ -44,6 +32,7 @@ public class Main {
             //System.out.print("Process [" + i + "] arrival time:  ");
             int arrival = validInput();
             if (arrival == -1) break;
+            arrivals.add(arrival);
             //System.out.print("Process [" + i + "] burst time:  ");
             int burst = validInput();
             if (burst == -1) break;
@@ -55,11 +44,16 @@ public class Main {
             processes.add(p);
         }
 
-        sortProcessArrival(processes);
+
+        Collections.sort(processes);
+        for (myProcess process: processes) {
+            System.out.println(process.getName()+ " " + process.getArrivalTime());
+        }
+
 
         System.out.println( "1 - Preemptive Shortest-Job First (SJF) Scheduling");
         SJFScheduling sjf = new SJFScheduling();
-        sjf.schedule(processes, processes.size());
+        sjf.schedule(processes, processes.size(), contextSwitching);
 
         for (myProcess process: processes) {
             process.setWaitingTime(0);
@@ -68,12 +62,14 @@ public class Main {
 
         System.out.println( "\n2 - Round Robin (RR) Scheduling");
         RRScheduling rr = new RRScheduling();
-        rr.schedule(processes, processes.size(), quantum);
+        rr.schedule(processes, processes.size(), quantum, contextSwitching);
 
 
     }
     /*
-    * p1
+    *
+    *
+p1
 0
 1
 p2
@@ -96,7 +92,7 @@ p7
 8
 * */
     /*
-    p1
+p1
 0
 3
 p2

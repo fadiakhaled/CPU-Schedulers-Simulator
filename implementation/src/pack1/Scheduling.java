@@ -41,16 +41,18 @@ public class Scheduling {
         float avgTurnAround = calculateAverageTurnAround(processes, processes.size());
 
         // printing each process waiting time and turn around time
-        System.out.println("\nProcesses |  Waiting time  | Turn around time");
-        System.out.println("----------|----------------|------------------");
+        System.out.println("\nProcesses |  Arrival Time |  Burst Time |  Waiting Time  | Turn Around Time");
+        System.out.println("----------|---------------|-------------|----------------|--------------");
 
         for (myProcess process : processes) {
             System.out.print("    " + process.getName() + "\t  |\t\t ");
-            System.out.print(process.getWaitingTime() + "\t\t   |\t\t");
+            System.out.print(process.getArrivalTime()+"\t\t  |\t\t ");
+            System.out.print(process.getBurstTime() + "\t\t|\t\t");
+            System.out.print(process.getWaitingTime() + "\t\t |\t\t");
             System.out.println(process.getTurnAroundTime());
         }
-        System.out.println("\nAverage waiting time = " + avgWaiting + " ms");
-        System.out.println("Average turn around time = " + avgTurnAround + " ms");
+        System.out.println("\nAverage Waiting Time = " + avgWaiting + " ms");
+        System.out.println("Average Turn Around Time = " + avgTurnAround + " ms");
 
     }
 }

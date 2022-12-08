@@ -8,8 +8,8 @@ public class RRScheduling {
     Scheduling scheduling = new Scheduling();
     private final Vector<String> executionOrder = new Vector<>();
 
-    public void calculateWaitingTime(Vector<myProcess> processes, int size, int quantum) {
-
+    public void calculateWaitingTime(Vector<myProcess> processes, int size, int quantum, int contextSwitching) {
+        int contextSwitchingCost = 0;
         int[] burstCopy = new int[size];
         for (int i = 0; i < size; i++) {
             burstCopy[i] = processes.get(i).getBurstTime();
@@ -26,6 +26,7 @@ public class RRScheduling {
                 if (arrivalTime <= time) {
                     check = true;
                     if (burstCopy[i] > 0) {
+                        contextSwitchingCost += contextSwitching;
                         String processName = processes.get(i).getName();
                         executionOrder.add(processName);
                         if (burstCopy[i] > quantum) {
@@ -34,8 +35,7 @@ public class RRScheduling {
                             burstCopy[i] = burstCopy[i] - quantum;
                         } else {
                             time += burstCopy[i]; // the process won't take the whole quantum
-
-                            int waiting = time - processes.get(i).getBurstTime() - arrivalTime;
+                            int waiting = (time+contextSwitchingCost)  - processes.get(i).getBurstTime() - arrivalTime;
                             processes.get(i).setWaitingTime(waiting);
                             burstCopy[i] = 0;
                             completed++;
@@ -50,9 +50,9 @@ public class RRScheduling {
         }
     }
 
-    public void schedule(Vector<myProcess> processes, int size, int quantum) {
+    public void schedule(Vector<myProcess> processes, int size, int quantum, int contextSwitching) {
 
-        calculateWaitingTime(processes, size, quantum);
+        calculateWaitingTime(processes, size, quantum, contextSwitching);
 
         TreeMap<String, myProcess> sortedProcess = new TreeMap<>();
         for (myProcess process : processes) {
@@ -72,4 +72,3 @@ public class RRScheduling {
 
 
 }
-

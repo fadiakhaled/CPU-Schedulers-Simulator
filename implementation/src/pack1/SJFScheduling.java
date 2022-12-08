@@ -8,7 +8,8 @@ public class SJFScheduling {
 
     private final Vector<String> executionOrder = new Vector<>();
 
-    public void calculateWaitingTime(Vector<myProcess> processes, int size){
+    public void calculateWaitingTime(Vector<myProcess> processes, int size, int contextSwitching){
+        int contextSwitchingCost = 0;
         int[] burstCopy = new int[size];
         for (int i = 0; i < size; i++) burstCopy[i] = processes.get(i).getBurstTime();
 
@@ -43,10 +44,13 @@ public class SJFScheduling {
             //filling the processes execution order vector
             String currentProcessName = processes.get(currentProcess).getName();
             int orderSize = executionOrder.size();
-            if (orderSize == 0 )
+            if (orderSize == 0 ) {
                 executionOrder.add(currentProcessName);
+                contextSwitchingCost += contextSwitching;
+            }
             else if (!Objects.equals(currentProcessName, executionOrder.get(orderSize-1))) {
                executionOrder.add(currentProcessName);
+                contextSwitchingCost += contextSwitching;
             }
 
 
@@ -60,11 +64,11 @@ public class SJFScheduling {
                 completed++; // increase number of completed processes
                 check = false;
 
-                int currentFinishTime = time+1;
+                int completionTime = time + 1 + contextSwitchingCost;
                 int processBurstTime = processes.get(currentProcess).getBurstTime();
                 int processArrivalTime = processes.get(currentProcess).getArrivalTime();
 
-                int waiting = currentFinishTime - processBurstTime - processArrivalTime;
+                int waiting = completionTime - processBurstTime - processArrivalTime;
 
                 if (waiting < 0)
                     waiting = 0;
@@ -77,8 +81,8 @@ public class SJFScheduling {
 
 
 
-    public void schedule(Vector <myProcess> processes, int size) {
-        calculateWaitingTime(processes, size);
+    public void schedule(Vector <myProcess> processes, int size, int contextSwitchingCost) {
+        calculateWaitingTime(processes, size, contextSwitchingCost);
         scheduling.printOrder(executionOrder);
         scheduling.printResults(processes);
     }
