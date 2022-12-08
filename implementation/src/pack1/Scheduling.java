@@ -42,7 +42,7 @@ public class Scheduling {
 
         // printing each process waiting time and turn around time
         System.out.println("\nProcesses |  Arrival Time |  Burst Time |  Waiting Time  | Turn Around Time");
-        System.out.println("----------|---------------|-------------|----------------|--------------");
+        System.out.println("----------|---------------|-------------|----------------|-----------------");
 
         for (myProcess process : processes) {
             System.out.print("    " + process.getName() + "\t  |\t\t ");
