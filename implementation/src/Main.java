@@ -17,7 +17,6 @@ public class Main {
     public static void main(String[] args) {
 
         Vector<myProcess> processes = new Vector<>();
-        Vector<Integer> arrivals = new Vector<Integer>();
         System.out.print("Enter number of processes: ");
         int processesNumber = validInput();
         System.out.print("Enter Robin Time Quantum: ");
@@ -32,20 +31,25 @@ public class Main {
             //System.out.print("Process [" + i + "] arrival time:  ");
             int arrival = validInput();
             if (arrival == -1) break;
-            arrivals.add(arrival);
             //System.out.print("Process [" + i + "] burst time:  ");
             int burst = validInput();
             if (burst == -1) break;
-            /*System.out.print("Process [" + i + "] priority:  ");
-            int priority = validInput(input);
-            if (priority == -1) break;*/
+            //System.out.print("Process [" + i + "] priority:  ");
+            int priority = validInput();
+            if (priority == -1) break;
 
-            myProcess p = new myProcess(name,  burst, arrival, 0);
+            myProcess p = new myProcess(name,  burst, arrival, priority);
             processes.add(p);
         }
 
 
-        Collections.sort(processes);
+        processes.sort(new Comparator<myProcess>() {
+            @Override
+            public int compare(myProcess o1, myProcess o2) {
+                return o1.getArrivalTime() - o2.getArrivalTime();
+            }
+        });
+
         for (myProcess process: processes) {
             System.out.println(process.getName()+ " " + process.getArrivalTime());
         }
@@ -63,6 +67,15 @@ public class Main {
         System.out.println( "\n2 - Round Robin (RR) Scheduling");
         RRScheduler rr = new RRScheduler();
         rr.schedule(processes, processes.size(), quantum, contextSwitching);
+
+        for (myProcess process: processes) {
+            process.setWaitingTime(0);
+            process.setTurnAroundTime(0);
+        }
+
+        System.out.println("\n 3 - Preemptive Priority Scheduling");
+        PPScheduler pp = new PPScheduler();
+        pp.schedule(processes, processes.size());
 
 
     }

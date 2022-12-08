@@ -1,6 +1,6 @@
 package pack1;
 
-public class myProcess implements Comparable <myProcess> {
+public class myProcess {
     private String name;
     private int burstTime;
     private int arrivalTime;
@@ -73,9 +73,6 @@ public class myProcess implements Comparable <myProcess> {
     }
 
 
-    @Override
-    public int compareTo(myProcess o) {
-        return arrivalTime - o.getArrivalTime();
-    }
+
 }
 
