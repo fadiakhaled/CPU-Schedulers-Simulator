@@ -10,18 +10,12 @@ public class PPScheduler {
 
     private final Vector<String> executionOrder = new Vector<>();
 
-    void calculateWaitingTime(Vector<myProcess> processes, int size){
+    void calculateWaitingTime(Vector<myProcess> processes, int size, int aging_factor){
 
+        int n = aging_factor;
         int completed = 0, time = 0;
         boolean check = false;
         int currentProcess = 0, currentPriority = Integer.MAX_VALUE;
-
-        /*processes.sort(new Comparator<myProcess>() {
-            @Override
-            public int compare(myProcess o1, myProcess o2) {
-                return o1.getPriority() - o2.getPriority();
-            }
-        });*/
 
         int [] priorities = new int [size];
         int [] burstCopy = new int [size];
@@ -31,55 +25,67 @@ public class PPScheduler {
         }
 
         while (completed != size) {
-
-            for (int i = 0; i < size; i++) {
-
-                int arrived = processes.get(i).getArrivalTime();
-                if ((arrived <= time) && (priorities[i] < currentPriority) && (burstCopy[i] > 0)){
-                    currentPriority = priorities[i];
-                    currentProcess = i;
-                    check = true;
+            
+            if (n == 0) {
+                for (int i = 0; i < size; i++) {
+                    int arrival = processes.get(i).getArrivalTime();
+                    if (priorities[i] > 0 && burstCopy[i] > 0 && arrival <= time)
+                    {
+                        priorities[i]--;
+                    }
                 }
-            }
-            if (!check) {
+                n = aging_factor;
+            } else {
+
+                for (int i = 0; i < size; i++) {
+
+                    int arrived = processes.get(i).getArrivalTime();
+                    if ((arrived <= time) && (priorities[i] < currentPriority) && (burstCopy[i] > 0)) {
+                        currentPriority = priorities[i];
+                        currentProcess = i;
+                        check = true;
+                    }
+                }
+                if (!check) {
+                    time++;
+                    continue;
+                }
+
+                String currentProcessName = processes.get(currentProcess).getName();
+                int orderSize = executionOrder.size();
+                if (orderSize == 0) {
+                    executionOrder.add(currentProcessName);
+                } else if (!Objects.equals(currentProcessName, executionOrder.get(orderSize - 1))) {
+                    executionOrder.add(currentProcessName);
+                }
+
+                burstCopy[currentProcess]--;
+
+                if (burstCopy[currentProcess] == 0) {
+                    currentPriority = Integer.MAX_VALUE;
+                    completed++;
+                    check = false;
+
+                    int completionTime = time + 1;
+
+                    int processBurstTime = processes.get(currentProcess).getBurstTime();
+                    int processArrivalTime = processes.get(currentProcess).getArrivalTime();
+
+                    int waiting = completionTime - processBurstTime - processArrivalTime;
+
+                    if (waiting < 0)
+                        waiting = 0;
+
+                    processes.get(currentProcess).setWaitingTime(waiting);
+                }
                 time++;
-                continue;
+                n--;
             }
-
-            String currentProcessName = processes.get(currentProcess).getName();
-            int orderSize = executionOrder.size();
-            if (orderSize == 0 ) {
-                executionOrder.add(currentProcessName);
-            }
-            else if (!Objects.equals(currentProcessName, executionOrder.get(orderSize-1))) {
-                executionOrder.add(currentProcessName);
-            }
-
-            burstCopy[currentProcess]--;
-
-            if (burstCopy[currentProcess] == 0) {
-                currentPriority = Integer.MAX_VALUE;
-                completed++;
-                check = false;
-
-                int completionTime = time + 1;
-
-                int processBurstTime = processes.get(currentProcess).getBurstTime();
-                int processArrivalTime = processes.get(currentProcess).getArrivalTime();
-
-                int waiting = completionTime - processBurstTime - processArrivalTime;
-
-                if (waiting < 0)
-                    waiting = 0;
-
-                processes.get(currentProcess).setWaitingTime(waiting);
-            }
-            time++;
         }
     }
 
-    public void schedule(Vector <myProcess> processes, int size) {
-        calculateWaitingTime(processes, size);
+    public void schedule(Vector <myProcess> processes, int size, int aging_factor) {
+        calculateWaitingTime(processes, size, aging_factor);
         scheduling.printOrder(executionOrder);
         scheduling.printResults(processes);
     }

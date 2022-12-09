@@ -23,6 +23,8 @@ public class Main {
         int quantum = validInput();
         System.out.print("Enter context switching cost: ");
         int contextSwitching = validInput();
+        System.out.println("Enter aging factor for starvation problem: ");
+        int aging_factor = validInput();
 
         for (int i = 1; i <= processesNumber; i++) {
             sc.nextLine();
@@ -75,7 +77,7 @@ public class Main {
 
         System.out.println("\n 3 - Preemptive Priority Scheduling");
         PPScheduler pp = new PPScheduler();
-        pp.schedule(processes, processes.size());
+        pp.schedule(processes, processes.size(), aging_factor);
 
 
     }
