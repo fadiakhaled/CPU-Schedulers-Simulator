@@ -77,7 +77,7 @@ public class Main {
 
         System.out.println("\n 3 - Preemptive Priority Scheduling");
         PPScheduler pp = new PPScheduler();
-        pp.schedule(processes, processes.size(), aging_factor);
+        pp.schedule(processes, processes.size(), contextSwitching ,aging_factor);
 
 
     }

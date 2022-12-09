@@ -10,7 +10,8 @@ public class PPScheduler {
 
     private final Vector<String> executionOrder = new Vector<>();
 
-    void calculateWaitingTime(Vector<myProcess> processes, int size, int aging_factor){
+    void calculateWaitingTime(Vector<myProcess> processes, int size, int contextSwitching, int aging_factor){
+        int contextSwitchingCost = 0;
 
         int n = aging_factor;
         int completed = 0, time = 0;
@@ -25,7 +26,7 @@ public class PPScheduler {
         }
 
         while (completed != size) {
-            
+
             if (n == 0) {
                 for (int i = 0; i < size; i++) {
                     int arrival = processes.get(i).getArrivalTime();
@@ -55,8 +56,10 @@ public class PPScheduler {
                 int orderSize = executionOrder.size();
                 if (orderSize == 0) {
                     executionOrder.add(currentProcessName);
+                    contextSwitchingCost += contextSwitching;
                 } else if (!Objects.equals(currentProcessName, executionOrder.get(orderSize - 1))) {
                     executionOrder.add(currentProcessName);
+                    contextSwitchingCost += contextSwitching;
                 }
 
                 burstCopy[currentProcess]--;
@@ -66,7 +69,7 @@ public class PPScheduler {
                     completed++;
                     check = false;
 
-                    int completionTime = time + 1;
+                    int completionTime = time + 1 + contextSwitchingCost;
 
                     int processBurstTime = processes.get(currentProcess).getBurstTime();
                     int processArrivalTime = processes.get(currentProcess).getArrivalTime();
@@ -84,8 +87,8 @@ public class PPScheduler {
         }
     }
 
-    public void schedule(Vector <myProcess> processes, int size, int aging_factor) {
-        calculateWaitingTime(processes, size, aging_factor);
+    public void schedule(Vector <myProcess> processes, int size, int contextSwitching, int aging_factor) {
+        calculateWaitingTime(processes, size, aging_factor, contextSwitching);
         scheduling.printOrder(executionOrder);
         scheduling.printResults(processes);
     }
