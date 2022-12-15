@@ -81,8 +81,8 @@ public class SJFScheduler {
     }
 
 
-    public void schedule(Vector <myProcess> processes, int size, int contextSwitchingCost) {
-        calculateWaitingTime(processes, size, contextSwitchingCost);
+    public void schedule(Vector <myProcess> processes, int size, int contextSwitching) {
+        calculateWaitingTime(processes, size, contextSwitching);
         scheduling.printOrder(executionOrder);
         scheduling.printResults(processes);
     }
