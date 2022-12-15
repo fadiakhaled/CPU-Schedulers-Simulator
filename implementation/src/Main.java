@@ -28,24 +28,23 @@ public class Main {
 
         for (int i = 1; i <= processesNumber; i++) {
             sc.nextLine();
-            //System.out.print("Process [" + i + "] name:  ");
+            System.out.print("Process [" + i + "] name:  ");
             String name = sc.nextLine();
-            //System.out.print("Process [" + i + "] arrival time:  ");
+            System.out.print("Process [" + i + "] arrival time:  ");
             int arrival = validInput();
             if (arrival == -1) break;
             //System.out.print("Process [" + i + "] burst time:  ");
             int burst = validInput();
             if (burst == -1) break;
-            //System.out.print("Process [" + i + "] priority:  "); 7
+            System.out.print("Process [" + i + "] priority:  "); 7
             int priority = validInput();
             if (priority == -1) break;
-            //System.out.print("Process [" + i + "] quantum:  ");
+            System.out.print("Process [" + i + "] quantum:  ");
             int processQuantum = validInput();
             if (processQuantum == -1) break;
             myProcess p = new myProcess(name,  burst, arrival, priority, processQuantum);
             processes.add(p);
         }
-
 
         processes.sort(new Comparator<myProcess>() {
             @Override
@@ -80,6 +79,11 @@ public class Main {
         System.out.println("\n 3 - Preemptive Priority Scheduling");
         PPScheduler pp = new PPScheduler();
         pp.schedule(processes, processes.size(), contextSwitching ,aging_factor);
+
+        for (myProcess process: processes) {
+            process.setWaitingTime(0);
+            process.setTurnAroundTime(0);
+        }
 
         System.out.println("\n 4 - AG Scheduling ");
         AGScheduler ag = new AGScheduler();
