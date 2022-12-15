@@ -7,13 +7,17 @@ public class myProcess {
     private int priority;
     private int waitingTime;
     private int turnAroundTime;
-    public myProcess(String n, int burst, int arrive, int prior){
+    private int quantum;
+
+    public myProcess() {}
+    public myProcess(String n, int burst, int arrive, int prior, int quantum){
         setName(n);
         setBurstTime(burst);
         setArrivalTime(arrive);
         setPriority(prior);
         setWaitingTime(0);
         setTurnAroundTime(0);
+        setQuantum(quantum);
     }
     public void setArrivalTime(int arrivalTime) {
         this.arrivalTime = arrivalTime;
@@ -62,6 +66,9 @@ public class myProcess {
     public int getTurnAroundTime() {
         return turnAroundTime;
     }
+
+    public void setQuantum(int quantum) {this.quantum = quantum;}
+    public int getQuantum() {return quantum;}
 
     public void printProcess () {
         System.out.println("Name: " + getName());

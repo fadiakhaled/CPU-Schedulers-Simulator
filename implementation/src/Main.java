@@ -23,7 +23,7 @@ public class Main {
         int quantum = validInput();
         System.out.print("Enter context switching cost: ");
         int contextSwitching = validInput();
-        System.out.println("Enter aging factor for starvation problem: ");
+        System.out.print("Enter aging factor for starvation problem: ");
         int aging_factor = validInput();
 
         for (int i = 1; i <= processesNumber; i++) {
@@ -36,11 +36,13 @@ public class Main {
             //System.out.print("Process [" + i + "] burst time:  ");
             int burst = validInput();
             if (burst == -1) break;
-            //System.out.print("Process [" + i + "] priority:  ");
+            //System.out.print("Process [" + i + "] priority:  "); 7
             int priority = validInput();
             if (priority == -1) break;
-
-            myProcess p = new myProcess(name,  burst, arrival, priority);
+            //System.out.print("Process [" + i + "] quantum:  ");
+            int processQuantum = validInput();
+            if (processQuantum == -1) break;
+            myProcess p = new myProcess(name,  burst, arrival, priority, processQuantum);
             processes.add(p);
         }
 
@@ -79,7 +81,9 @@ public class Main {
         PPScheduler pp = new PPScheduler();
         pp.schedule(processes, processes.size(), contextSwitching ,aging_factor);
 
-
+        System.out.println("\n 4 - AG Scheduling ");
+        AGScheduler ag = new AGScheduler();
+        ag.schedule(processes, processes.size());
     }
     /*
     *
