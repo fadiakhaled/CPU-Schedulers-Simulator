@@ -36,7 +36,7 @@ public class Main {
             //System.out.print("Process [" + i + "] burst time:  ");
             int burst = validInput();
             if (burst == -1) break;
-            System.out.print("Process [" + i + "] priority:  "); 7
+            System.out.print("Process [" + i + "] priority:  "); 
             int priority = validInput();
             if (priority == -1) break;
             System.out.print("Process [" + i + "] quantum:  ");
