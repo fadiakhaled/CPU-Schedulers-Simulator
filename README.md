@@ -10,7 +10,7 @@ Round robin scheduling algorithm is one of the CPU scheduling algorithms in whic
 
 * AG Scheduling    
   *   Each process is provided a static time to execute called quantum.
-  * Once a process is executed for given time period, it’s called FCFS till the finishing of (ceil(25%)) of its Quantum time then it’s converted tonon preemptive Priority till the finishing of the next (ceil(25%)), after that it’s converted to preemptive Shortest- Job First (SJF). 
+  * Once a process is executed for given time period, it’s called FCFS till the finishing of (ceil(25%)) of its Quantum time then it’s converted to non-preemptive priority till the finishing of the next (ceil(25%)), after that it’s converted to preemptive Shortest- Job First (SJF). 
   * We have 3 scenarios of the running process:
      1. The running process used all its quantum time and it still have job to do (add this process to the end of the queue, then increases its Quantum time by Two).
      2. The running process was execute as non-preemptive Priority and didn’t use all its quantum time based on another process converted from ready to running (add this process to the end of the queue, and then increase its Quantum time by ceil(the remaining Quantum time/2)). 
